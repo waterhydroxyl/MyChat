@@ -22,7 +22,7 @@ module.exports = merge(baseConfig(true), {
           from: 'public',
           to: 'public',
           globOptions: {
-            ignore: ['**/index.html'],
+            ignore: ['*/index.html'],
           },
         },
       ],

@@ -1,4 +1,4 @@
-const { DefinePlugin } = require('webpack')
+const { DefinePlugin } = require('webpack');
 const resolveApp = require('../paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
@@ -23,6 +23,7 @@ module.exports = (isProduction) => {
     },
     externals: {
       // 不希望依赖打进包中，走外链cdn等
+      // io: 'socket.io',
       // '$': 'Jquery',
       // react: 'React',
       // 'react-dom': 'ReactDOM',
@@ -38,7 +39,7 @@ module.exports = (isProduction) => {
           use: 'vue-loader',
         },
         {
-          test: /\.css$/,
+          test: /\.(css|less)$/,
           use: [
             cssFinalLoader, // 开发与生产使用不同loader
             {

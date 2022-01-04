@@ -8,7 +8,7 @@ module.exports = merge(baseConfig(false), {
   devServer: {
     hot: 'only',
     port: 3002, // 端口号，工作中从3001开始，因此增加1个到3002
-    open: true, // 自动打开浏览器
+    // open: true, // 自动打开浏览器
     compress: true, // 开启gzip压缩
     historyApiFallback: true, // history路径在刷新出错时重定向开启
     // proxy: { // 接口代理
