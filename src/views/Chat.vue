@@ -5,31 +5,27 @@
       <div class="contact-name">联系人列表</div>
       <ul class="contact-list">
         <!-- 通过从服务端拿到的userList列表更新这里 -->
-        <li v-for="user in userList" :key="user"></li>
+        <li v-for="user in userList" :key="user" class="contact-item'">{{ user }}</li>
       </ul>
     </div>
     <!-- 2-单个聊天室的内容 -->
     <div class="main">
       <div class="header">群聊版本-v0</div>
       <div class="list">
-        <!-- 你的说话内容 -->
-        <!-- <div class="list-item">
-						<div class="message">I am bill</div>
-						<img class="avatar" src="./favicon.ico" alt="">
-					</div>
-					<div class="list-item">
-						<div class="message">I am billllllllllllllll</div>
-						<img class="avatar" src="./favicon.ico" alt="">
-					</div> -->
-        <!-- 你的联系人的说话内容 -->
-        <!-- <div class="list-item-left">
-						<img class="avatar" src="./favicon.ico" alt="">
-						<div class="message">I am bill,too.</div>
-					</div> -->
+        <template v-for="message in messageList">
+          <div class="list-item" :key="message.time" v-if="message.isMsgMe">
+            <div class="message">{{ message.content }}</div>
+            <img class="avatar" src="../assets/img/favicon.ico" alt="" />
+          </div>
+          <div class="list-item-left" :key="message.time" v-else>
+            <img class="avatar" src="../assets/img/favicon.ico" alt="" />
+            <div class="message">{{ message.content }}</div>
+          </div>
+        </template>
       </div>
       <div class="footer">
-        <textarea id="sendInput" name="text"></textarea>
-        <button id="send">发送</button>
+        <textarea id="sendInput" name="text" v-model="sendInputValue"></textarea>
+        <button id="send" @click="sendMessage">发送</button>
       </div>
     </div>
   </div>
@@ -40,13 +36,34 @@ export default {
   data() {
     return {
       userList: [],
+      messageList: [],
+      sendInputValue: '',
       Socket: null,
     };
   },
   mounted() {
     console.log('chat:', this.$bus.Socket);
-
+    this.Socket = this.$bus.Socket;
     this.userList = this.$bus.Socket.userList;
+    this.$http.get('http://127.0.0.1:50461/history').then((res) => {
+      console.log(res);
+    });
+  },
+  watch: {
+    Socket: {
+      handler(newVal, oldVal) {
+        console.log('Socket:', newVal, oldVal);
+        this.userList = newVal.userList;
+        this.messageList = newVal.messageList;
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    sendMessage() {
+      this.$bus.Socket.sendMessage(this.sendInputValue);
+      this.sendInputValue = '';
+    },
   },
 };
 </script>

@@ -1,7 +1,6 @@
-const path = require('path');
 const http = require('http');
 const Koa = require('koa');
-const serve = require('koa-static');
+const cors = require('koa2-cors'); // 跨域
 const socketIO = require('socket.io');
 // https://www.jianshu.com/p/4e80b931cdea
 const hostname = '127.0.0.1';
@@ -11,6 +10,7 @@ const port = 50461;
 // 1.使用socket.io配合koa启动带有websocket的服务
 // 创建Koa实例
 const app = new Koa();
+app.use(cors());
 // 创建http server实例
 const httpServer = http.createServer(app.callback());
 // 创建socket.io实例
@@ -78,17 +78,15 @@ io.on('connection', (socket) => {
     io.sockets.emit('online', [users.keys()]);
   });
 });
-
-// 静态资源路由
-// app.use(serve(publicPath));
 // 6.在用户登录时展示出历史聊天记录~
 // 获取所有历史记录的HTTP接口——挂一个Koa中间件上去
-// app.use((ctx) => {
-//   if (ctx.request.path === '/history') {
-//     // 处理指向/history的请求 直接返回所有历史消息
-//     ctx.body = history;
-//   }
-// });
+app.use((ctx) => {
+  if (ctx.request.path === '/history') {
+    console.log('访问历史记录');
+    // 处理指向/history的请求 直接返回所有历史消息
+    ctx.body = history;
+  }
+});
 httpServer.listen(port, hostname, () => {
   console.log(`httpServer running at http://${hostname}:${port}`);
 });

@@ -55,7 +55,7 @@ module.exports = (isProduction) => {
           sideEffects: true, // 希望保留副作用
         },
         {
-          test: /\.(png|gif|jpe?g|svg)$/,
+          test: /\.(png|gif|jpe?g|svg|ico)$/,
           type: 'asset', // webpack5使用内置静态资源模块，且不指定具体，根据以下规则使用
           generator: {
             filename: 'img/[name].[hash:6][ext]', // ext本身会附带点，放入img目录下
