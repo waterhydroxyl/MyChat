@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <!-- 登录标题 -->
-    <p class="login-title">👩‍💻MyChat | by YiLiang👨‍💻</p>
+    <p class="login-title">👩‍💻Mywat | by YiLiang👨‍💻</p>
     <!-- 输入用户名 -->
     <div id="userNameBox">
       <span>UserName</span>
